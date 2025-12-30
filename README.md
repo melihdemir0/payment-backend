@@ -1,3 +1,7 @@
+![Node.js](https://img.shields.io/badge/node-%3E%3D16-green)
+![NestJS](https://img.shields.io/badge/nestjs-%3E%3D9-red)
+![Docker](https://img.shields.io/badge/docker-%3E%3D20-blue)
+
 # Payment Backend
 
 Payment backend service built with **NestJS**, **TypeORM**, **PostgreSQL**, and **Docker**.
@@ -29,7 +33,8 @@ This project provides a clean and secure **payment record management API** with 
 
 ---
 
-Swagger UI:http://localhost:3000/docs
+Swagger UI:
+http://localhost:3000/docs
 
 ## ▶️ Run Locally
 
