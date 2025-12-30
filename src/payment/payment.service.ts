@@ -5,16 +5,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/develop
 import { Payment } from './payment.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PaymentStatus, PaymentTargetType } from './payment.enums';
 
-<<<<<<< HEAD
 import { toPaymentResponse } from './payment.mapper';
 import { PaymentResponseDto } from './dto/payment-response.dto';
 import { ListPaymentsQueryDto } from './dto/list-payments.query.dto';
@@ -24,12 +19,6 @@ type CurrentUserLike = { sub?: string; id?: string; role?: string };
 
 function getUserId(u: CurrentUserLike): string {
   return String(u?.sub || u?.id || '');
-=======
-type CurrentUserLike = { sub?: string; id?: string; role?: string };
-
-function getUserId(u: CurrentUserLike): string {
-  return (u?.sub || u?.id || '') as string;
->>>>>>> origin/develop
 }
 function isAdmin(u: CurrentUserLike): boolean {
   return String(u?.role || '').toUpperCase() === 'ADMIN';
@@ -42,7 +31,6 @@ export class PaymentService {
     private readonly repo: Repository<Payment>,
   ) {}
 
-<<<<<<< HEAD
   // CREATE
   async create(
     dto: CreatePaymentDto,
@@ -50,10 +38,6 @@ export class PaymentService {
   ): Promise<PaymentResponseDto> {
     const ownerId = getUserId(user);
 
-=======
-  async create(dto: CreatePaymentDto, user: CurrentUserLike) {
-    const ownerId = getUserId(user);
->>>>>>> origin/develop
     const payment = this.repo.create({
       ownerId,
       amount: dto.amount,
@@ -64,7 +48,6 @@ export class PaymentService {
       targetType: dto.targetType ?? PaymentTargetType.OTHER,
       targetId: dto.targetId ?? null,
     });
-<<<<<<< HEAD
 
     const saved = await this.repo.save(payment);
     return toPaymentResponse(saved);
@@ -116,26 +99,12 @@ export class PaymentService {
     id: string,
     user: CurrentUserLike,
   ): Promise<PaymentResponseDto> {
-=======
-    return this.repo.save(payment);
-  }
-
-  async findAll(user: CurrentUserLike) {
-    if (isAdmin(user)) return this.repo.find({ order: { createdAt: 'DESC' } });
-
-    const ownerId = getUserId(user);
-    return this.repo.find({ where: { ownerId }, order: { createdAt: 'DESC' } });
-  }
-
-  async findOne(id: string, user: CurrentUserLike) {
->>>>>>> origin/develop
     const payment = await this.repo.findOne({ where: { id } });
     if (!payment) throw new NotFoundException('Payment not found');
 
     if (!isAdmin(user) && payment.ownerId !== getUserId(user)) {
       throw new ForbiddenException('Not allowed');
     }
-<<<<<<< HEAD
 
     return toPaymentResponse(payment);
   }
@@ -174,26 +143,6 @@ export class PaymentService {
       throw new ForbiddenException('Not allowed');
     }
 
-=======
-    return payment;
-  }
-
-  async update(id: string, dto: UpdatePaymentDto, user: CurrentUserLike) {
-    const payment = await this.findOne(id, user);
-    Object.assign(payment, {
-      ...dto,
-      currency: dto.currency ?? payment.currency,
-      description: dto.description ?? payment.description,
-      targetId: dto.targetId ?? payment.targetId,
-      targetType: dto.targetType ?? payment.targetType,
-      status: dto.status ?? payment.status,
-    });
-    return this.repo.save(payment);
-  }
-
-  async remove(id: string, user: CurrentUserLike) {
-    const payment = await this.findOne(id, user);
->>>>>>> origin/develop
     await this.repo.remove(payment);
     return { ok: true };
   }
