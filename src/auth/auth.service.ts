@@ -24,6 +24,7 @@ export class AuthService {
 
   private readonly REFRESH_SECRET: string =
     process.env.JWT_REFRESH_SECRET ?? 'dev_refresh_secret';
+  usersService: any;
 
   constructor(
     private readonly users: UsersService,
@@ -67,7 +68,12 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    await this.users.update(userId, { refreshTokenHash: null });
+    if (!userId) return { ok: true };
+
+    await this.users.update(userId, {
+      refreshTokenHash: null,
+    });
+
     return { ok: true };
   }
 

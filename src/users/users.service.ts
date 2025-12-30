@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -18,6 +18,11 @@ export class UsersService {
 
   findByEmail(email: string) {
     return this.repo.findOne({ where: { email } });
+  }
+  async getUserById(id: string) {
+    const user = await this.repo.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('Kullanıcı bulunamadı');
+    return user;
   }
 
   async create(dto: CreateUserDto) {
