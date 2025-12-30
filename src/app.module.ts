@@ -8,7 +8,13 @@ import { AuthModule } from './auth/auth.module';
 import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), TypeOrmRootModule, UsersModule, AuthModule, PaymentModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmRootModule,
+    UsersModule,
+    AuthModule,
+    PaymentModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
